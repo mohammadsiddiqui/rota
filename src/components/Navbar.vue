@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar app color="primary" absolute dark>
+	<v-app-bar app color="primary" fixed dark class="elevation-2">
 		<v-app-bar-nav-icon></v-app-bar-nav-icon>
 		<v-toolbar-title class="font-weight-bold" @click="$router.push('/')">ROTA</v-toolbar-title>
 		<v-spacer></v-spacer>

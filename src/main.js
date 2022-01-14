@@ -13,26 +13,26 @@ Vue.use(VueSupabase, {
 
 import VueRouter from "vue-router";
 import router from "./router";
-
 import "@mdi/font/css/materialdesignicons.css";
-
 Vue.use(VueRouter);
+
+import dayjs from "dayjs";
+
+Vue.filter("DATE", (val) => {
+	if (val) return dayjs(val).format("MMM, YYYY");
+	return "";
+});
 
 Vue.$supabase.auth.onAuthStateChange((event, session) => {
 	console.log(event);
 	if (session && session.user && session.user.user_metadata) {
 		store.dispatch("setData", { user: session.user.user_metadata });
 	}
-	mountAPP();
 });
 
-if (!Vue.$supabase.auth.session()) mountAPP();
-
-function mountAPP() {
-	new Vue({
-		vuetify,
-		router,
-		store,
-		render: (h) => h(App),
-	}).$mount("#app");
-}
+new Vue({
+	vuetify,
+	router,
+	store,
+	render: (h) => h(App),
+}).$mount("#app");

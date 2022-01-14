@@ -1,4 +1,5 @@
 import VueRouter from "vue-router";
+import store from "./store";
 
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
@@ -13,24 +14,39 @@ const baseRoutes = [
 ];
 
 const routes = baseRoutes.concat([]);
+
+const scrollBehavior = function (to, from, savedPosition) {
+	if (savedPosition) {
+		return savedPosition;
+	} else {
+		return { x: 0, y: 0 };
+	}
+};
+
 let router = new VueRouter({
 	mode: "history",
 	routes: routes,
+	scrollBehavior,
 });
 
-// router.beforeEach(async (to, from, next) => {
-// 	if (to.path == "/login" && store.state.user) {
-// 		next("/");
-// 	} else if (to.path == "/login") {
-// 		next();
-// 	} else if (to.path.includes("/admin") && !store.state.user.admin) {
-// 		next("/");
-// 	} else if (store.state.user) {
-// 		next();
-// 	} else {
-// 		window.redirect = to.path;
-// 		next("/login");
-// 	}
-// });
+router.beforeEach(async (to, from, next) => {
+	if (!store.state.user && to.path != "/login") {
+		next("/login");
+	} else if (to.path == "/login" && store.state.user) {
+		next("/");
+	} else {
+		next();
+	}
+
+	// if (to.path == "/login" && store.state.user) {
+	// 	next("/");
+	// } else if (to.path == "/login") {
+	// 	next();
+	// } else if (!store.state.user) {
+	// 	next("/login");
+	// } else if (store.state.user) {
+	// 	next();
+	// }
+});
 
 export default router;

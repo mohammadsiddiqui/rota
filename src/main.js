@@ -18,21 +18,33 @@ Vue.use(VueRouter);
 
 import dayjs from "dayjs";
 
-Vue.filter("DATE", (val) => {
+Vue.filter("MONTH", (val) => {
 	if (val) return dayjs(val).format("MMM, YYYY");
 	return "";
 });
 
+Vue.filter("DATE", (val) => {
+	if (val) return dayjs(val).format("DD MMM, YYYY - dddd");
+	return "";
+});
+
+let app = null;
+
 Vue.$supabase.auth.onAuthStateChange((event, session) => {
-	console.log(event);
 	if (session && session.user && session.user.user_metadata) {
 		store.dispatch("setData", { user: session.user.user_metadata });
 	}
+	mountApp();
 });
 
-new Vue({
-	vuetify,
-	router,
-	store,
-	render: (h) => h(App),
-}).$mount("#app");
+if (!Vue.$supabase.auth.session()) mountApp();
+
+function mountApp() {
+	if (app) return false;
+	app = new Vue({
+		vuetify,
+		router,
+		store,
+		render: (h) => h(App),
+	}).$mount("#app");
+}

@@ -15,7 +15,7 @@
 				</v-btn>
 				<v-spacer></v-spacer>
 				<v-toolbar-title class="title">
-					{{ value | DATE }}
+					{{ value | MONTH }}
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<v-btn fab text small color="grey darken-2" @click="next">
@@ -39,7 +39,7 @@
 
 		<v-toolbar rounded class="my-4 elevation-1">
 			<v-toolbar-title class="title"> Your Earnings </v-toolbar-title>
-			<v-btn small text class="">{{ value | DATE }}</v-btn>
+			<v-btn small text class="">{{ value | MONTH }}</v-btn>
 			<v-spacer></v-spacer>
 			<v-btn text depressed>
 				£1999.00
@@ -53,7 +53,6 @@
 						<v-list-item :key="index">
 							<v-list-item-content>
 								<v-list-item-title>{{ index | DATE }}</v-list-item-title>
-								<!-- <v-list-item-subtitle class="text--primary"></v-list-item-subtitle> -->
 								<v-list-item-subtitle>Some Note</v-list-item-subtitle>
 							</v-list-item-content>
 
@@ -61,7 +60,7 @@
 								<v-list-item-action-text>
 									<v-btn text color="primary">
 										<span class="text-font-bold">{{ item }}</span>
-										<v-icon right> mdi-clock </v-icon>
+										<v-icon> mdi-clock </v-icon>
 									</v-btn>
 								</v-list-item-action-text>
 							</v-list-item-action>

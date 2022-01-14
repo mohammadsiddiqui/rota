@@ -10,14 +10,14 @@
 		<v-toolbar class="elevation-2" style="position: fixed; left: 0; right: 0; top: 56px; z-index: 9;">
 			<v-tabs v-model="tab" center-active grow :show-arrows="false">
 				<v-tab v-for="item in items" :key="item" @click="showItem(item)">
-					{{ item | DATE }}
+					{{ item | MONTH }}
 				</v-tab>
 			</v-tabs>
 		</v-toolbar>
 		<div style="height: 56px;"></div>
 		<v-toolbar rounded class="mb-4 elevation-1">
 			<v-toolbar-title class="title"> Your Earnings </v-toolbar-title>
-			<v-btn small text class="">{{ value | DATE }}</v-btn>
+			<v-btn small text class="">{{ value | MONTH }}</v-btn>
 			<v-spacer></v-spacer>
 			<v-btn text depressed>
 				£1999.00

@@ -25,7 +25,7 @@
 				<v-text-field v-model="setting.month_end_day" label="Month End Day" type="number"></v-text-field>
 				<v-text-field v-model="setting.pay_day" label="Pay Day" type="number"></v-text-field>
 
-				<v-btn class="px-10 mt-6" :loading="loading" color="primary" dark @click="save">Save</v-btn>
+				<v-btn class="px-16 mt-6" :loading="loading" color="primary" dark @click="save">Save</v-btn>
 			</v-card-text>
 		</v-card>
 	</div>

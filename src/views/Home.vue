@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<v-toolbar flat class="mb-4 trans">
+		<v-toolbar flat class="trans">
 			<v-toolbar-title class="title"> Your ROTA </v-toolbar-title>
 			<v-spacer></v-spacer>
-			<v-btn fab small depressed color="primary">
+			<v-btn icon small depressed dark class="primary" to="/add">
 				<v-icon> mdi-plus </v-icon>
 			</v-btn>
 		</v-toolbar>
@@ -24,7 +24,7 @@
 			</v-toolbar>
 
 			<v-sheet height="250">
-				<v-calendar ref="calendar" v-model="value" color="primary" type="month" @change="updateRange">
+				<v-calendar ref="calendar" v-model="value" color="primary" type="month" @click:day="viewDay" @change="updateRange">
 					<template v-slot:day-label="{ month, day, date }">
 						<div class="fill-height">
 							<div v-if="currMonth == month">
@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import dayjs from "dayjs";
 export default {
 	data: () => ({
 		value: new Date(),
@@ -99,10 +98,6 @@ export default {
 		},
 	}),
 	methods: {
-		printx(x) {
-			console.log(x);
-		},
-		setToday() {},
 		prev() {
 			this.$refs.calendar.prev();
 		},
@@ -110,51 +105,14 @@ export default {
 			this.$refs.calendar.next();
 		},
 
-		viewDay({ date }) {
-			console.log(date);
-			return false;
-		},
-		getEventColor(event) {
-			return event.color;
-		},
-
-		showEvent({ nativeEvent }) {
-			// const open = () => {
-			//   this.selectedEvent = event
-			//   this.selectedElement = nativeEvent.target
-			//   requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-			// }
-
-			// if (this.selectedOpen) {
-			//   this.selectedOpen = false
-			//   requestAnimationFrame(() => requestAnimationFrame(() => open()))
-			// } else {
-			//   open()
-			// }
-
-			nativeEvent.stopPropagation();
+		viewDay({ date, month }) {
+			if (month != this.currMonth) return false;
+			this.$router.push(`/add?date=${date}`);
 		},
 
 		updateRange({ start, end }) {
 			console.log("Month Changed");
 			this.currMonth = start.month;
-
-			// const events = [];
-			// for (let i = start.day; i <= end.day; i++) {
-			// 	let date = `${start.year}-${String(start.month).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
-
-			// 	if (!this.hours[date]) continue;
-
-			// 	events.push({
-			// 		name: "11",
-			// 		start: new Date(date),
-			// 		end: new Date(date),
-			// 		color: "green",
-			// 		timed: false,
-			// 	});
-			// }
-
-			// this.events = [];
 		},
 
 		rnd(a, b) {

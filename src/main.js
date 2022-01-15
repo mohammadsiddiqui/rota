@@ -28,6 +28,8 @@ Vue.filter("DATE", (val) => {
 	return "";
 });
 
+Vue.prototype.$day = dayjs;
+
 Vue.prototype.$notify = function (text, color = "green", time = 5000, show = true) {
 	store.dispatch("setData", { message: { text, color, show, time } });
 };
@@ -58,15 +60,14 @@ async function getUserByHash(token) {
 
 async function storeUser(user) {
 	if (!user) return false;
-
-	store.dispatch("getSettings");
-
 	const userData = { ...user.user_metadata, id: user.id };
 	store.dispatch("setData", { user: userData });
 }
 
-function mountApp() {
+async function mountApp() {
 	if (app) app.$destroy();
+	if (store.state.user) await store.dispatch("getSettings");
+
 	app = new Vue({
 		vuetify,
 		router,

@@ -5,12 +5,14 @@ import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Profile from "./views/Profile.vue";
 import Details from "./views/Details.vue";
+import Addtime from "./views/Addtime.vue";
 
 const baseRoutes = [
 	{ path: "/", component: Home, meta: { auth: true } },
 	{ path: "/login", component: Login, meta: { auth: false } },
 	{ path: "/profile", component: Profile, meta: { auth: true } },
 	{ path: "/details", component: Details, meta: { auth: true } },
+	{ path: "/add", component: Addtime, meta: { auth: true } },
 ];
 
 const routes = baseRoutes.concat([]);

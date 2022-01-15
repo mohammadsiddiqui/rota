@@ -7,10 +7,10 @@ import Profile from "./views/Profile.vue";
 import Details from "./views/Details.vue";
 
 const baseRoutes = [
-	{ path: "/", component: Home },
-	{ path: "/login", component: Login },
-	{ path: "/profile", component: Profile },
-	{ path: "/details", component: Details },
+	{ path: "/", component: Home, meta: { auth: true } },
+	{ path: "/login", component: Login, meta: { auth: false } },
+	{ path: "/profile", component: Profile, meta: { auth: true } },
+	{ path: "/details", component: Details, meta: { auth: true } },
 ];
 
 const routes = baseRoutes.concat([]);
@@ -30,23 +30,20 @@ let router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-	if (!store.state.user && to.path != "/login") {
+	let matched = to.matched.some((res) => res.meta.auth);
+	if (matched) {
+		if (store.state.user) {
+			next();
+			return;
+		}
 		next("/login");
-	} else if (to.path == "/login" && store.state.user) {
+		return;
+	} else if (store.state.user && !to.meta.auth) {
 		next("/");
-	} else {
-		next();
+		return;
 	}
 
-	// if (to.path == "/login" && store.state.user) {
-	// 	next("/");
-	// } else if (to.path == "/login") {
-	// 	next();
-	// } else if (!store.state.user) {
-	// 	next("/login");
-	// } else if (store.state.user) {
-	// 	next();
-	// }
+	next();
 });
 
 export default router;

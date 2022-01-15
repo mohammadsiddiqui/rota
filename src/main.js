@@ -29,7 +29,6 @@ Vue.filter("DATE", (val) => {
 });
 
 let app = null;
-
 Vue.$supabase.auth.onAuthStateChange((event, session) => {
 	if (session && session.user && session.user.user_metadata) {
 		store.dispatch("setData", { user: session.user.user_metadata });
@@ -37,10 +36,10 @@ Vue.$supabase.auth.onAuthStateChange((event, session) => {
 	mountApp();
 });
 
-if (!Vue.$supabase.auth.session()) mountApp();
+if (!Vue.$supabase.auth.user()) mountApp();
 
 function mountApp() {
-	if (app) return false;
+	if (app) app.$destroy();
 	app = new Vue({
 		vuetify,
 		router,

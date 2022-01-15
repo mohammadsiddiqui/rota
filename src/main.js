@@ -76,7 +76,7 @@ async function mountApp() {
 	}
 	if (store.state.user) {
 		store.dispatch("getData");
-		await store.dispatch("getSettings");
+		store.dispatch("getSettings");
 	}
 
 	app = new Vue({

@@ -16,7 +16,7 @@
 				<v-text-field v-model="item.end_time" label="Shift End Time" type="time"></v-text-field>
 				<v-text-field v-model="item.break" label="Break (Hrs)" type="number"></v-text-field>
 
-				<v-text-field v-model="item.note" label="Note (Any additional texts)" type="number"></v-text-field>
+				<v-text-field v-model="item.note" label="Note (Any additional texts)"></v-text-field>
 			</v-card-text>
 
 			<v-toolbar flat dense @click="show = !show">
@@ -65,6 +65,7 @@ export default {
 			try {
 				let { error } = await this.$supabase.from("timesheets").update(this.item).eq("id", this.item.id);
 				if (error) throw Error("Unable to save, try again later!");
+				await this.fetchData();
 				this.$notify("Data Updated!");
 				this.goBack();
 			} catch (error) {
@@ -78,6 +79,8 @@ export default {
 			try {
 				let { error } = await this.$supabase.from("timesheets").insert([this.item]);
 				if (error) throw Error("Unable to save, try again later!");
+
+				await this.fetchData();
 				this.$notify("Data Updated!");
 				this.goBack();
 			} catch (error) {
@@ -100,6 +103,15 @@ export default {
 
 			this.item.id ? this.update() : this.create();
 		},
+
+		async fetchData() {
+			await this.$store.dispatch("getData", {
+				start: this.$day(this.item.date).startOf("month").format("YYYY-MM-DD"),
+				end: this.$day(this.item.date).endOf("month").format("YYYY-MM-DD"),
+				force: true,
+			});
+		},
+
 		async load(d) {
 			this.loading = true;
 			let def = this.$store.state.setting;

@@ -46,7 +46,7 @@ export default new Vuex.Store({
 
 			let currMonth = this._vm.$day(date.start).format("YYYY-MM");
 			let months = Object.assign(state.months);
-			if (months[currMonth]) return months[currMonth];
+			if (!date.force && months[currMonth]) return months[currMonth];
 
 			months[currMonth] = {
 				hours: {},

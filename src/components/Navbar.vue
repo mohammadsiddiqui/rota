@@ -22,6 +22,7 @@ export default {
 			const { error } = await this.$supabase.auth.signOut();
 			if (error) return console.log(error);
 			this.$store.dispatch("setData", { user: null });
+			this.$router.push("/login");
 		},
 	},
 };

@@ -103,6 +103,11 @@ export default {
 		async load(d) {
 			this.loading = true;
 			let def = this.$store.state.setting;
+			if (!def) {
+				this.$notify("Please maintain default settings first", "info");
+				this.$router.push("/profile");
+			}
+
 			let user = this.$store.state.user;
 			let date = this.$day(d).format("YYYY-MM-DD");
 

@@ -37,65 +37,21 @@
 			</v-sheet>
 		</v-card>
 
-		<v-toolbar rounded class="my-4 elevation-1">
-			<v-toolbar-title class="title"> Your Earnings </v-toolbar-title>
-			<v-btn small text class="">{{ value | MONTH }}</v-btn>
-			<v-spacer></v-spacer>
-			<v-btn text depressed>
-				£1999.00
-			</v-btn>
-		</v-toolbar>
-
-		<v-card flat>
-			<v-list two-line>
-				<v-list-item-group multiple>
-					<template v-for="(item, index) in hours">
-						<v-list-item :key="index">
-							<v-list-item-content>
-								<v-list-item-title>{{ index | DATE }}</v-list-item-title>
-								<v-list-item-subtitle>Some Note</v-list-item-subtitle>
-							</v-list-item-content>
-
-							<v-list-item-action>
-								<v-list-item-action-text>
-									<v-btn text color="primary">
-										<span class="text-font-bold">{{ item }}</span>
-										<v-icon> mdi-clock </v-icon>
-									</v-btn>
-								</v-list-item-action-text>
-							</v-list-item-action>
-						</v-list-item>
-
-						<v-divider :key="index + 'D'"></v-divider>
-					</template>
-				</v-list-item-group>
-			</v-list>
-		</v-card>
+		<Shiftlist :monthly="monthly" :key="currMonth" />
 	</div>
 </template>
 
 <script>
+import Shiftlist from "../components/Shiftlist.vue";
 export default {
+	components: {
+		Shiftlist,
+	},
 	data: () => ({
 		value: new Date(),
 		currMonth: 0,
-
-		weekday: [0, 1, 2, 3, 4, 5, 6],
-		events: [],
-		hours: {
-			"2021-12-31": 11,
-			"2022-01-16": 11,
-			"2022-01-15": 11,
-			"2022-01-08": 11,
-			"2022-01-07": 11,
-			"2022-01-06": 11,
-			"2022-01-05": 11,
-			"2022-01-04": 11,
-			"2022-01-03": 11,
-			"2022-01-02": 11,
-			"2022-01-01": 11,
-			"2022-02-01": 11,
-		},
+		hours: {},
+		monthly: {},
 	}),
 	methods: {
 		prev() {
@@ -110,22 +66,18 @@ export default {
 			this.$router.push(`/add?date=${date}`);
 		},
 
-		updateRange({ start, end }) {
+		async updateRange({ start, end }) {
+			this.$load(true);
 			console.log("Month Changed");
 			this.currMonth = start.month;
+			let data = await this.$store.dispatch("getData", {
+				start: start.date,
+				end: end.date,
+			});
+			this.hours = data.hours;
+			this.monthly = Object.assign(data);
+			this.$load(false);
 		},
-
-		rnd(a, b) {
-			return Math.floor((b - a + 1) * Math.random()) + a;
-		},
-
-		getVal(past, date) {
-			console.log(past, date);
-			if (past) return "";
-
-			return this.hours[date] ? this.hours[date] : "";
-		},
-		getEvents() {},
 	},
 	mounted() {
 		this.$refs.calendar.checkChange();

@@ -15,6 +15,8 @@
 				<v-text-field v-model="item.start_time" label="Shift Start Time" type="time"></v-text-field>
 				<v-text-field v-model="item.end_time" label="Shift End Time" type="time"></v-text-field>
 				<v-text-field v-model="item.break" label="Break (Hrs)" type="number"></v-text-field>
+
+				<v-text-field v-model="item.note" label="Note (Any additional texts)" type="number"></v-text-field>
 			</v-card-text>
 
 			<v-toolbar flat dense @click="show = !show">
@@ -119,6 +121,7 @@ export default {
 					end_time: def.end_time,
 					break: def.break,
 					rate: def.rate,
+					note: "",
 				};
 			}
 

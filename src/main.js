@@ -34,6 +34,10 @@ Vue.prototype.$notify = function (text, color = "green", time = 5000, show = tru
 	store.dispatch("setData", { message: { text, color, show, time } });
 };
 
+Vue.prototype.$load = function (open = false) {
+	store.dispatch("setData", { loading: open });
+};
+
 let app = null;
 Vue.$supabase.auth.onAuthStateChange((_, session) => {
 	storeUser(session ? session.user : null);
@@ -65,8 +69,15 @@ async function storeUser(user) {
 }
 
 async function mountApp() {
-	if (app) app.$destroy();
-	if (store.state.user) await store.dispatch("getSettings");
+	if (app) {
+		app.$destroy();
+		let doc = document.getElementById("app");
+		if (doc) doc.innerHTML = "";
+	}
+	if (store.state.user) {
+		store.dispatch("getData");
+		await store.dispatch("getSettings");
+	}
 
 	app = new Vue({
 		vuetify,

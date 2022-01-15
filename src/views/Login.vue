@@ -9,13 +9,10 @@
 
 <script>
 export default {
-	data: () => ({
-		user: window.USER,
-	}),
 	methods: {
 		async login() {
 			const { error } = await this.$supabase.auth.signIn({ provider: "google" });
-			if (error) window.alert(error.message);
+			if (error) this.$notify(error.message, "error");
 		},
 	},
 };

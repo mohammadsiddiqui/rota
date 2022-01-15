@@ -8,6 +8,10 @@
 		</v-main>
 		<Footer />
 
+		<v-dialog v-model="loading" width="100" persistent>
+			<v-btn class="elevation-0" x-large loading>Loading...</v-btn>
+		</v-dialog>
+
 		<v-snackbar v-model="message.show" :color="message.color" :timeout="message.time" bottom>
 			<div class="d-flex">
 				<v-icon class="mr-2">{{ message.color == "error" ? "mdi-alert-circle" : "mdi-check-circle" }}</v-icon>
@@ -29,7 +33,7 @@ export default {
 	name: "App",
 	components: { Navbar, Footer },
 	computed: {
-		...mapState(["message"]),
+		...mapState(["message", "loading"]),
 	},
 };
 </script>

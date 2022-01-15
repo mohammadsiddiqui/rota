@@ -88,7 +88,7 @@ export default {
 				data = this.$store.state.setting;
 			}
 
-			if (data) {
+			if (!data) {
 				this.setting = {
 					user_id: this.$store.state.user.id,
 					rate: 9.5,

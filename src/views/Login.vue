@@ -16,6 +16,7 @@ export default {
 		async login() {
 			const { error } = await this.$supabase.auth.signIn({ provider: "google" });
 			if (error) throw error;
+			else this.$router.push("/");
 		},
 	},
 };

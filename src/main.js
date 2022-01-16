@@ -62,22 +62,15 @@ async function getUserByHash(token) {
 	mountApp();
 }
 
-async function storeUser(user) {
+function storeUser(user) {
 	if (!user) return false;
 	const userData = { ...user.user_metadata, id: user.id };
 	store.dispatch("setData", { user: userData });
 }
 
 async function mountApp() {
-	if (app) {
-		app.$destroy();
-		let doc = document.getElementById("app");
-		if (doc) doc.innerHTML = "";
-	}
-	if (store.state.user) {
-		store.dispatch("getData");
-		store.dispatch("getSettings");
-	}
+	if (app) app.$destroy();
+	if (store.state.user) store.dispatch("getSettings");
 
 	app = new Vue({
 		vuetify,

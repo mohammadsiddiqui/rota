@@ -3,6 +3,7 @@
 		<v-card rounded flat class="elevation-1 my-3">
 			<div class="d-flex justify-space-between align-center px-3 pt-3">
 				<div class="title">Your Earnings</div>
+				<div class="subtitle-2" v-if="monthly.hrs">{{ monthly.hrs }} Hrs</div>
 				<div class="title">£{{ monthly.total }}</div>
 			</div>
 			<div class="d-flex grey--text justify-space-between align-center px-3 mb-3">
@@ -27,8 +28,9 @@
 						<v-list-item-content>
 							<v-list-item-title>{{ item.date | DATE }}</v-list-item-title>
 							<v-list-item-subtitle>
-								<span>Rate: {{ item.rate }}</span>
-								<span v-if="item.note">| {{ item.note }}</span>
+								<span>Rate: {{ item.rate }} </span>
+								<span v-if="item.multi > 1" class="ml-1">(x{{ item.multi }})</span>
+								<span v-if="item.note" class="ml-1">| {{ item.note }}</span>
 							</v-list-item-subtitle>
 						</v-list-item-content>
 						<v-list-item-avatar @click="goTo(item)">

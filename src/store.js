@@ -41,22 +41,27 @@ export default new Vuex.Store({
 			}
 		},
 
-		async getData({ commit, state }, date) {
-			if (!date) return false;
+		async getData({ commit, state }, prop) {
+			if (!prop) return {};
+			const { date, force } = prop;
 
-			let currMonth = this._vm.$day(date.start).format("YYYY-MM");
+			const start = this._vm.$day(date).startOf("month").format("YYYY-MM-DD");
+			const end = this._vm.$day(date).endOf("month").format("YYYY-MM-DD");
+
+			let currMonth = this._vm.$day(start).format("YYYY-MM");
 			let months = Object.assign(state.months);
-			if (!date.force && months[currMonth]) return months[currMonth];
+			if (!force && months[currMonth]) return months[currMonth];
 
 			months[currMonth] = {
 				hours: {},
 				items: [],
 				total: 0,
-				date: date.start,
+				hrs: 0,
+				date: start,
 			};
 
 			try {
-				let { data, error } = await this._vm.$supabase.from("timesheets").select("*").gte("date", date.start).lte("date", date.end).order("date");
+				let { data } = await this._vm.$supabase.from("timesheets").select("*").gte("date", start).lte("date", end).order("date");
 
 				if (data && data.length > 0) {
 					for (let i = 0; i < data.length; i++) {
@@ -67,6 +72,9 @@ export default new Vuex.Store({
 
 						let total = parseFloat(months[currMonth].total) + parseFloat(el.amount);
 						months[currMonth].total = parseFloat(total).toFixed(2);
+
+						let hrs = parseFloat(months[currMonth].hrs) + parseFloat(el.hours);
+						months[currMonth].hrs = parseFloat(hrs).toFixed(2);
 						months[currMonth].items.push(el);
 					}
 

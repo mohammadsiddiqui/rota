@@ -17,6 +17,7 @@
 import Shiftlist from "../components/Shiftlist.vue";
 
 export default {
+	name: "Details",
 	components: {
 		Shiftlist,
 	},
@@ -51,31 +52,19 @@ export default {
 				this.items.push(next);
 			}
 			this.items.sort();
-
-			this.load();
 		},
 
 		async load() {
+			if (!this.date) this.setItems();
 			this.$load(true);
 			this.setIndex();
-
-			let start = this.date;
-			let end = this.$day(start).endOf("month").format("YYYY-MM-DD");
-			console.log("load data for date", start, end);
-
-			let data = await this.$store.dispatch("getData", {
-				start: start,
-				end: end,
-			});
-
-			console.log(data);
-
+			let data = await this.$store.dispatch("getData", { date: this.date });
 			this.monthly = Object.assign(data);
 			this.$load(false);
 		},
 	},
-	created() {
-		this.setItems();
+	activated() {
+		this.load();
 	},
 };
 </script>

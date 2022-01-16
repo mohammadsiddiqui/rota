@@ -8,7 +8,7 @@
 			</v-btn>
 		</v-toolbar>
 
-		<v-card class="elevation-1">
+		<v-card class="elevation-1" v-if="ready">
 			<v-toolbar dense flat outlined style="border-bottom: 0;">
 				<v-btn fab text small color="grey darken-2" @click="prev">
 					<v-icon> mdi-chevron-left </v-icon>
@@ -37,13 +37,14 @@
 			</v-sheet>
 		</v-card>
 
-		<Shiftlist :monthly="monthly" :key="currMonth" />
+		<Shiftlist :monthly="monthly" :key="currMonth" v-if="ready" />
 	</div>
 </template>
 
 <script>
 import Shiftlist from "../components/Shiftlist.vue";
 export default {
+	name: "Home",
 	components: {
 		Shiftlist,
 	},
@@ -52,6 +53,7 @@ export default {
 		currMonth: 0,
 		hours: {},
 		monthly: {},
+		ready: false,
 	}),
 	methods: {
 		prev() {
@@ -66,21 +68,26 @@ export default {
 			this.$router.push(`/add?date=${date}`);
 		},
 
-		async updateRange({ start, end }) {
+		async updateRange({ start }) {
 			this.$load(true);
-			console.log("Month Changed");
 			this.currMonth = start.month;
-			let data = await this.$store.dispatch("getData", {
-				start: start.date,
-				end: end.date,
-			});
+			let data = await this.$store.dispatch("getData", { date: start.date });
 			this.hours = data.hours;
 			this.monthly = Object.assign(data);
 			this.$load(false);
+			this.ready = true;
+		},
+
+		async load() {
+			let start = {
+				date: this.$day(this.value).format("YYYY-MM-DD"),
+				month: this.$day(this.value).get("month") + 1,
+			};
+			this.updateRange({ start });
 		},
 	},
-	mounted() {
-		this.$refs.calendar.checkChange();
+	activated() {
+		this.load();
 	},
 };
 </script>

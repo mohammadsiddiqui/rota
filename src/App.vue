@@ -3,7 +3,9 @@
 		<Navbar />
 		<v-main class="grey lighten-5">
 			<v-container>
-				<router-view></router-view>
+				<keep-alive :include="['Home', 'Details']">
+					<router-view :key="$route.fullPath"></router-view>
+				</keep-alive>
 			</v-container>
 		</v-main>
 		<Footer />

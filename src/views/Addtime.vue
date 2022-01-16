@@ -106,8 +106,7 @@ export default {
 
 		async fetchData() {
 			await this.$store.dispatch("getData", {
-				start: this.$day(this.item.date).startOf("month").format("YYYY-MM-DD"),
-				end: this.$day(this.item.date).endOf("month").format("YYYY-MM-DD"),
+				date: this.item.date,
 				force: true,
 			});
 		},

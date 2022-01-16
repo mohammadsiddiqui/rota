@@ -12,7 +12,7 @@
 			</div>
 
 			<v-divider></v-divider>
-			<v-list two-line dense v-if="monthly">
+			<v-list three-line dense v-if="monthly">
 				<v-list-item v-if="monthly.items && monthly.items.length == 0">
 					<v-list-item-content>
 						<v-list-item-subtitle>
@@ -32,10 +32,11 @@
 								<span v-if="item.multi > 1" class="ml-1">(x{{ item.multi }})</span>
 								<span v-if="item.note" class="ml-1">| {{ item.note }}</span>
 							</v-list-item-subtitle>
+							<v-list-item-subtitle> Amount : £{{ item.amount }} </v-list-item-subtitle>
 						</v-list-item-content>
 						<v-list-item-avatar @click="goTo(item)">
-							<v-avatar class="green white--text" size="36">
-								<span class="font-weight-bold subtitle-2">{{ item.hours }}</span>
+							<v-avatar class="green white--text" size="34">
+								<span class="font-weight-bold body-2">{{ item.hours }}</span>
 							</v-avatar>
 						</v-list-item-avatar>
 					</v-list-item>

@@ -28,7 +28,8 @@
 					<template v-slot:day-label="{ month, day, date }">
 						<div class="fill-height">
 							<div v-if="currMonth == month">
-								<v-btn icon small dark class="success text-weight-bold" v-if="hours[date]">{{ day }}</v-btn>
+								<v-btn icon small dark class="success lighten-2 text-weight-bold" v-if="hours[date] && hours[date] < 8">{{ day }}</v-btn>
+								<v-btn icon small dark class="success text-weight-bold" v-else-if="hours[date] && hours[date] > 8">{{ day }}</v-btn>
 								<v-btn icon small text v-else>{{ day }}</v-btn>
 							</div>
 						</div>

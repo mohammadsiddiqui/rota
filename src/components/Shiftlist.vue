@@ -59,13 +59,13 @@ export default {
 	computed: {
 		max() {
 			if (this.monthly && this.monthly.total) {
-				return parseFloat(0.87 * parseFloat(this.monthly.total)).toFixed(2);
+				return parseFloat(0.95 * parseFloat(this.monthly.total)).toFixed(2);
 			}
 			return 0;
 		},
 		min() {
 			if (this.monthly && this.monthly.total) {
-				return parseFloat(0.77 * parseFloat(this.monthly.total)).toFixed(2);
+				return parseFloat(0.8 * parseFloat(this.monthly.total)).toFixed(2);
 			}
 			return 0;
 		},
